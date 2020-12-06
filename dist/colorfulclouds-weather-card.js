@@ -664,7 +664,7 @@ class WeatherCard extends LitElement {
           flex:none;
           text-align: center;
           color: var(--primary-text-color);
-          border-right: 0.1em solid #d9d9d9;
+          border-right: none;
           line-height: 2;
           box-sizing: border-box;
           padding-bottom: 1em;
@@ -787,7 +787,7 @@ class WeatherCard extends LitElement {
         }
         .showdata.right {
           border-left: none;
-          border-right: 0.1em solid #d9d9d9;
+          border-right: none;
         }
         .showdata.right > * {
           text-align: right;
