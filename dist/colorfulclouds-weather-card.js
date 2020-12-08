@@ -1,5 +1,5 @@
 console.info("%c  WEATHER CARD  \n%c  Version 1.3.1 ",
-"color: orange; font-weight: bold; background: black", 
+"color: orange; font-weight: bold; background: black",
 "color: white; font-weight: bold; background: dimgray");
 
 const LitElement = Object.getPrototypeOf(
@@ -110,7 +110,7 @@ class WeatherCard extends LitElement {
     this._last_updated = null;
     this.tempMAX = null;
     this.tempMIN = null;
-    this.tempCOLOR = [];    
+    this.tempCOLOR = [];
   }
   shouldUpdate(changedProps) {
     return hasConfigOrEntityChanged(this, changedProps);
@@ -120,7 +120,7 @@ class WeatherCard extends LitElement {
     if (!this._config || !this.hass) {
       return html``;
     }
-    
+
     if (this._config.entity==="none"){
 
       if (this.hass.config.components.indexOf("colorfulclouds") == -1){
@@ -188,7 +188,7 @@ class WeatherCard extends LitElement {
       });
 
       attributes.hourly_temperature.map(
-                      
+
         (daily,i) => this.tempCOLOR.push(Math.round(255*((attributes.hourly_temperature[i].value-this.tempMIN)/(this.tempMAX-this.tempMIN)))+","
                                         +Math.round(66+150*(1-((attributes.hourly_temperature[i].value-this.tempMIN)/(this.tempMAX-this.tempMIN))))+","
                                         +Math.round(255*(1-((attributes.hourly_temperature[i].value-this.tempMIN)/(this.tempMAX-this.tempMIN)))))
@@ -201,7 +201,7 @@ class WeatherCard extends LitElement {
     const lang = this.hass.selectedLanguage || this.hass.language;
     const next_rising = new Date(this.hass.states["sun.sun"].attributes.next_rising);
     const next_setting = new Date(this.hass.states["sun.sun"].attributes.next_setting);
-    
+
     return html`
       ${this.renderStyle()}
       <ha-card>
@@ -237,7 +237,7 @@ class WeatherCard extends LitElement {
         ${this._config.show_forecast
           ?html`
         <div>
-          <div>
+          <div class="forecast-mh">
             <ul style="list-style:none;padding:0 0 0 14px;margin: 0;">
               <li style="font-weight:bold;"><span class="ha-icon"
                       ><ha-icon icon="mdi:camera-timer"></ha-icon
@@ -352,7 +352,7 @@ class WeatherCard extends LitElement {
                   }
                 </div>
               `:""}
-        ${  
+        ${
           attributes.hourly_temperature &&
           attributes.hourly_temperature.length > 0 &&
           this._config.houer_forecast
@@ -360,7 +360,7 @@ class WeatherCard extends LitElement {
                 <div class="forecast clear"  @scroll="${this._hscroll}">
                   ${
                     attributes.hourly_temperature.map(
-                      
+
                       (daily,i) => html`
                         <div class="hourly${i>attributes.hourly_temperature.length-5?" last5":""} d${
                           new Date(attributes.hourly_temperature[i].datetime).toLocaleTimeString(
@@ -427,7 +427,7 @@ class WeatherCard extends LitElement {
     let i = Math.floor(Hforecast.scrollLeft/((scrollWidth-Hforecast.clientWidth)/Hs));
     let offset_data = Hforecast.scrollLeft*scrollWidth/(scrollWidth-Hforecast.clientWidth);
     offset_data = offset_data>scrollWidth-25?scrollWidth-25:offset_data;
-    
+
     if(this.showTarget>Hs/2){
       offset_data = offset_data-85;
       Hforecast.lastElementChild.classList.add("right");
@@ -438,8 +438,8 @@ class WeatherCard extends LitElement {
     Hforecast.lastElementChild.style.left=offset_data+"px";
 
     if(i===this.showTarget)return;
-    i = i===Hs?Hs-1:i; 
-    this.showTarget = i;  
+    i = i===Hs?Hs-1:i;
+    this.showTarget = i;
     // console.log("L:"+this.showTarget);
   }
   getUnit(measure) {
@@ -578,6 +578,10 @@ class WeatherCard extends LitElement {
         }
         .weather-icon {
           --mdc-icon-size: 64px;
+        }
+        .forecast-mh{
+          margin-block-start: 20px;
+          margin-block-end: 20px;
         }
         .info {
           display: flex;
@@ -755,7 +759,7 @@ class WeatherCard extends LitElement {
         }
 
         .precipitation,.cloudrate {
-          
+
           color: var(--secondary-text-color);
           display: block;
           border-top: solid 6px;
@@ -784,7 +788,7 @@ class WeatherCard extends LitElement {
           display:block;
           text-align: left;
           margin: 0 5px;
-          
+
         }
         .showdata > .dayname{
           background: var( --ha-card-background, var(--card-background-color, white) )
@@ -871,22 +875,23 @@ export class WeatherEditor extends LitElement {
               "ui.panel.lovelace.editor.card.config.optional"
             )})
           </label>
-          <input type="text" 
-            value="${this.config.secondary_info_attribute}" 
-            slot="input" list="attributelist" 
-            autocapitalize="none" 
-            .configValue="${"secondary_info_attribute"}" 
-            @change=${this._valueChanged} 
+          <input type="text"
+            value="${this.config.secondary_info_attribute}"
+            slot="input" list="attributelist"
+            autocapitalize="none"
+            .configValue="${"secondary_info_attribute"}"
+            @change=${this._valueChanged}
             @focus=${this._focusEntity}
           >
       </paper-input-container>
-      <br>
+    </div>
+    <div class="side-by-side">
       <ha-formfield label="详细预报">
           <ha-switch id="df" ?checked=${this.config.show_forecast} value="normal" name="style_mode" .configValue="${"show_forecast"}" @change="${this._valueChanged}"></ha-switch>
       </ha-formfield>
-      </ha-formfield>
       <ha-formfield label="其他信息">
           <ha-switch id="df" ?checked=${this.config.show_more_info} value="normal" name="style_mode" .configValue="${"show_more_info"}" @change="${this._valueChanged}"></ha-switch>
+      </ha-formfield>
       <ha-formfield label="小时预报">
           <ha-switch id="hf" ?checked=${this.config.houer_forecast} value="normal" name="style_mode" .configValue="${"houer_forecast"}" @change="${this._valueChanged}"></ha-switch>
       </ha-formfield>
@@ -922,7 +927,7 @@ export class WeatherEditor extends LitElement {
   _focusEntity(e){
     e.target.value = ''
   }
-  
+
   _valueChanged(e){
     const target = e.target;
 
