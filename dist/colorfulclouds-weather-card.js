@@ -149,6 +149,7 @@ class WeatherCard extends LitElement {
       );
       this._config.houer_forecast = false;
       this._config.show_forecast = false;
+      this._config.show_more_info = false;
     }
 
     let stateObj = this.hass.states[this._config.entity];
@@ -246,6 +247,8 @@ class WeatherCard extends LitElement {
                     ></span>${attributes.forecast_hourly}</li>
             </ul>
           </div>
+          ${this._config.show_more_info
+            ?html`
               <span>
                 <ul class="variations">
                   <li>
@@ -291,6 +294,7 @@ class WeatherCard extends LitElement {
                   </li>
                 </ul>
               </span>
+           `:""}
             </div>
           `:""}
         ${
@@ -876,9 +880,13 @@ export class WeatherEditor extends LitElement {
             @focus=${this._focusEntity}
           >
       </paper-input-container>
+      <br>
       <ha-formfield label="详细预报">
           <ha-switch id="df" ?checked=${this.config.show_forecast} value="normal" name="style_mode" .configValue="${"show_forecast"}" @change="${this._valueChanged}"></ha-switch>
       </ha-formfield>
+      </ha-formfield>
+      <ha-formfield label="其他信息">
+          <ha-switch id="df" ?checked=${this.config.show_more_info} value="normal" name="style_mode" .configValue="${"show_more_info"}" @change="${this._valueChanged}"></ha-switch>
       <ha-formfield label="小时预报">
           <ha-switch id="hf" ?checked=${this.config.houer_forecast} value="normal" name="style_mode" .configValue="${"houer_forecast"}" @change="${this._valueChanged}"></ha-switch>
       </ha-formfield>
