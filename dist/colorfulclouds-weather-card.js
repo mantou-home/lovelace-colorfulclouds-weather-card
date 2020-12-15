@@ -239,12 +239,8 @@ class WeatherCard extends LitElement {
         <div>
           <div class="forecast-mh">
             <ul style="list-style:none;padding:0 0 0 14px;margin: 0;">
-              <li style="font-weight:bold;"><span class="ha-icon"
-                      ><ha-icon icon="mdi:camera-timer"></ha-icon
-                    ></span> ${attributes.forecast_minutely}</li>
-              <li><span class="ha-icon"
-                      ><ha-icon icon="mdi:clock-outline"></ha-icon
-                    ></span>${attributes.forecast_hourly}</li>
+              <li>${attributes.forecast_minutely}</li>
+              <li>${attributes.forecast_hourly}</li>
             </ul>
           </div>
           ${this._config.show_more_info
